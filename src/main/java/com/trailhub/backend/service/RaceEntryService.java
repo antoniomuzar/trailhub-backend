@@ -8,12 +8,16 @@ import com.trailhub.backend.model.RaceEntry;
 import com.trailhub.backend.repository.AppUserRepository;
 import com.trailhub.backend.repository.RaceEntryRepository;
 import com.trailhub.backend.repository.RaceRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
+
 
 @Service
+@Transactional
 public class RaceEntryService {
 
     private final RaceRepository raceRepository;
@@ -57,15 +61,12 @@ public class RaceEntryService {
         raceEntryRepository.deleteByRaceIdAndAppUserId(raceId, appUser.getId());
     }
 
-    public List<EntryResponseDto> getEntriesByRace(Long raceId){
+    public Page<EntryResponseDto> getEntriesByRace(Pageable pageable, Long raceId){
 
          getRaceOrThrow(raceId);
 
-        List <RaceEntry> entries = raceEntryRepository.findByRaceId(raceId);
-
-        return entries.stream()
-                .map(raceEntryMapper::toDto)
-                .toList();
+        Page<RaceEntry> entryPage = raceEntryRepository.findByRaceId(raceId, pageable);
+        return entryPage.map(raceEntryMapper::toDto);
     }
 
     private Race getRaceOrThrow(Long raceId){

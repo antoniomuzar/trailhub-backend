@@ -56,7 +56,7 @@ public class RaceService {
     public Page<RaceResponseDto> getAllRaces(Pageable pageable){
         log.debug("Fetching all races with pagination: {}", pageable);
 
-        Page <Race> racePage = raceRepository.findAll(pageable);
+        Page<Race>racePage = raceRepository.findAll(pageable);
 
         return racePage.map(raceMapper::toDto);
     }
