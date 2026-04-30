@@ -2,6 +2,7 @@ package com.trailhub.backend.service;
 
 import com.trailhub.backend.dto.race.RaceRequestDto;
 import com.trailhub.backend.dto.race.RaceResponseDto;
+import com.trailhub.backend.exception.RaceNotFoundException;
 import com.trailhub.backend.mapper.RaceMapper;
 import com.trailhub.backend.model.Race;
 import com.trailhub.backend.repository.RaceRepository;
@@ -71,6 +72,6 @@ public class RaceService {
     private Race getRaceOrThrow(Long raceId){
 
       return  raceRepository.findById(raceId)
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(()-> new RaceNotFoundException(raceId));
     }
 }

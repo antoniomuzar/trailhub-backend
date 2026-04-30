@@ -1,6 +1,10 @@
 package com.trailhub.backend.service;
 
 import com.trailhub.backend.dto.entry.EntryResponseDto;
+import com.trailhub.backend.exception.AppUserNotFoundException;
+import com.trailhub.backend.exception.RaceEntryAlreadyExistsException;
+import com.trailhub.backend.exception.RaceEntryNotFoundException;
+import com.trailhub.backend.exception.RaceNotFoundException;
 import com.trailhub.backend.mapper.RaceEntryMapper;
 import com.trailhub.backend.model.AppUser;
 import com.trailhub.backend.model.Race;
@@ -39,7 +43,7 @@ public class RaceEntryService {
       AppUser appUser= getUserOrThrow(userEmail);
 
         if (raceEntryRepository.existsByRaceIdAndAppUserId(raceId, appUser.getId())) {
-            throw new RuntimeException();
+            throw new RaceEntryAlreadyExistsException(raceId, appUser.getId());
         }
         RaceEntry raceEntry = new RaceEntry();
         raceEntry.setRace(race);
@@ -56,14 +60,15 @@ public class RaceEntryService {
         AppUser appUser= getUserOrThrow(userEmail);
 
         if(!raceEntryRepository.existsByRaceIdAndAppUserId(raceId, appUser.getId())){
-            throw new RuntimeException();
+            throw new RaceEntryNotFoundException(raceId, appUser.getId());
         }
         raceEntryRepository.deleteByRaceIdAndAppUserId(raceId, appUser.getId());
     }
 
+    @Transactional(readOnly = true)
     public Page<EntryResponseDto> getEntriesByRace(Pageable pageable, Long raceId){
 
-         getRaceOrThrow(raceId);
+        getRaceOrThrow(raceId);
 
         Page<RaceEntry> entryPage = raceEntryRepository.findByRaceId(raceId, pageable);
         return entryPage.map(raceEntryMapper::toDto);
@@ -72,12 +77,12 @@ public class RaceEntryService {
     private Race getRaceOrThrow(Long raceId){
 
         return  raceRepository.findById(raceId)
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(()-> new RaceNotFoundException(raceId));
     }
 
     private AppUser getUserOrThrow(String userEmail){
 
         return appUserRepository.findByEmail(userEmail)
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(()-> new AppUserNotFoundException(userEmail));
     }
 }

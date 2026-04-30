@@ -41,7 +41,7 @@ public class RaceEntryController {
         return ResponseEntity.ok(entries);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/me")
     public ResponseEntity<Void> leaveRace(@PathVariable Long raceId, Authentication authentication){
         String userEmail = authentication.getName();
         log.debug("Leaving race: {}, user: {}", raceId, userEmail);
