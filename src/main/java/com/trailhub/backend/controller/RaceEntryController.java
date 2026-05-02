@@ -3,6 +3,7 @@ package com.trailhub.backend.controller;
 import com.trailhub.backend.dto.entry.EntryResponseDto;
 import com.trailhub.backend.service.RaceEntryService;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -34,7 +35,7 @@ public class RaceEntryController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<EntryResponseDto>> getAllEntries( @PathVariable Long raceId, Pageable pageable){
+    public ResponseEntity<Page<EntryResponseDto>> getAllEntries( @PathVariable Long raceId, @ParameterObject Pageable pageable){
         log.debug("Fetching entries for race: {}, pageable: {}", raceId, pageable);
 
         Page<EntryResponseDto> entries = raceEntryService.getEntriesByRace(pageable, raceId);

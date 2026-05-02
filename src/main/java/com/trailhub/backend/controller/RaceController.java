@@ -5,6 +5,7 @@ import com.trailhub.backend.dto.race.RaceResponseDto;
 import com.trailhub.backend.service.RaceService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -44,7 +45,7 @@ public class RaceController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<RaceResponseDto>> getAllRaces(Pageable pageable){
+    public ResponseEntity<Page<RaceResponseDto>> getAllRaces(@ParameterObject Pageable pageable){
         log.debug("Fetching all races with pagination: {}", pageable);
 
         Page<RaceResponseDto> races = raceService.getAllRaces(pageable);

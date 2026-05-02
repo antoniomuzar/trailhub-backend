@@ -42,6 +42,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/races/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/races/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/races/**").hasRole("ADMIN")
+
+                        //Swagger endpoint
+                        .requestMatchers("/v3/api-docs/**",
+                                    "swagger-ui/**",
+                                "/swagger-ui.html").permitAll()
+
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex->ex
