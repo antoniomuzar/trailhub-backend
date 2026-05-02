@@ -1,0 +1,50 @@
+package com.trailhub.backend.integration;
+
+import com.trailhub.backend.AbstractIntegrationTest;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+@Transactional
+class RaceEntryApiIT extends AbstractIntegrationTest {
+
+    private static final long SEEDED_RACE_ID = 1L;
+
+    @Autowired
+    MockMvc mockMvc;
+
+    @Test
+    void joinRace_asUser_returns201() throws Exception {
+        mockMvc.perform(post("/api/races/{raceId}/entries/me", SEEDED_RACE_ID)
+                        .with(httpBasic("john@trailhub.com", "user123")))
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    void joinRace_twice_returns409() throws Exception {
+        mockMvc.perform(post("/api/races/{raceId}/entries/me", SEEDED_RACE_ID)
+                        .with(httpBasic("michael@trailhub.com", "user123")))
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(post("/api/races/{raceId}/entries/me", SEEDED_RACE_ID)
+                        .with(httpBasic("michael@trailhub.com", "user123")))
+                .andExpect(status().isConflict());
+    }
+
+    @Test
+    void leaveRace_whenNotRegistered_returns404() throws Exception {
+        mockMvc.perform(delete("/api/races/{raceId}/entries/me", SEEDED_RACE_ID)
+                        .with(httpBasic("john@trailhub.com", "user123")))
+                .andExpect(status().isNotFound());
+    }
+}

@@ -80,6 +80,31 @@ If you don’t use the wrapper, a globally installed Maven works too:
 mvn spring-boot:run
 ```
 
+## Testing
+
+**Docker must be running** — integration tests use [Testcontainers](https://java.testcontainers.org/) to start a disposable PostgreSQL 16 instance (image is pulled on first run).
+
+From the project root:
+
+Windows (PowerShell)
+
+```powershell
+.\mvnw.cmd test
+```
+
+macOS / Linux
+
+```bash
+./mvnw test
+```
+
+What runs:
+
+- **Integration tests** (`RaceApiIT`, `RaceEntryApiIT`): Spring Boot + `MockMvc` + real Postgres in Docker — API behaviour, HTTP Basic, and roles.
+- **Unit tests** (`RaceMapperTest`): plain JUnit, no Spring — request/response DTO mapping.
+
+`AbstractIntegrationTest` holds the shared Testcontainers datasource setup; it is not a test class by itself.
+
 ## Authentication
 The API uses HTTP Basic Authentication.
 
