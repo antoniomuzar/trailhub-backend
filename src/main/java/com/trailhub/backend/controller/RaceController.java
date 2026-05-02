@@ -28,43 +28,35 @@ public class RaceController {
 
     @PostMapping
     public ResponseEntity<RaceResponseDto> createRace(@Valid @RequestBody RaceRequestDto raceRequestDto) {
-        log.info("Creating race: {}", raceRequestDto);
 
         RaceResponseDto savedRace = raceService.createRace(raceRequestDto);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(savedRace);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RaceResponseDto> getRaceById(@PathVariable Long id){
-        log.info("Fetching race by id: {}" , id);
+    public ResponseEntity<RaceResponseDto> getRaceById(@PathVariable Long id) {
 
         RaceResponseDto race = raceService.getRaceById(id);
-
-        return  ResponseEntity.ok(race);
+        return ResponseEntity.ok(race);
     }
 
     @GetMapping
-    public ResponseEntity<Page<RaceResponseDto>> getAllRaces(@ParameterObject Pageable pageable){
-        log.debug("Fetching all races with pagination: {}", pageable);
+    public ResponseEntity<Page<RaceResponseDto>> getAllRaces(@ParameterObject Pageable pageable) {
 
         Page<RaceResponseDto> races = raceService.getAllRaces(pageable);
         return ResponseEntity.ok(races);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RaceResponseDto> updateRace( @PathVariable Long id, @Valid @RequestBody RaceRequestDto raceRequestDto){
-        log.info("Update race: {}", id);
+    public ResponseEntity<RaceResponseDto> updateRace(@PathVariable Long id, @Valid @RequestBody RaceRequestDto raceRequestDto) {
 
-        RaceResponseDto updatedRace = raceService.updateRace(id,raceRequestDto);
-
+        RaceResponseDto updatedRace = raceService.updateRace(id, raceRequestDto);
         return ResponseEntity.ok(updatedRace);
 
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRace(@PathVariable Long id){
-        log.info("Deleting race: {}", id);
+    public ResponseEntity<Void> deleteRace(@PathVariable Long id) {
 
         raceService.deleteRaceById(id);
         return ResponseEntity.noContent().build();

@@ -12,20 +12,20 @@ import org.springframework.stereotype.Component;
 public class OpenApiConfig {
 
     @Bean
-    public OpenAPI openAPI(){
+    public OpenAPI openAPI() {
         final String securitySchemeName = "basicAuth";
 
         return new OpenAPI()
                 .info(new Info()
-                .title("TrailHub API")
+                        .title("TrailHub API")
                         .version("1.0")
                         .description("Trail race management backend"))
                 .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
                 .components(new Components()
-                .addSecuritySchemes(securitySchemeName,
-                        new SecurityScheme()
-                                .name(securitySchemeName)
-                                .type(SecurityScheme.Type.HTTP)
-                                .scheme("basic")));
+                        .addSecuritySchemes(securitySchemeName,
+                                new SecurityScheme()
+                                        .name(securitySchemeName)
+                                        .type(SecurityScheme.Type.HTTP)
+                                        .scheme("basic")));
     }
 }

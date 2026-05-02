@@ -24,7 +24,7 @@ public class RaceService {
         this.raceMapper = raceMapper;
     }
 
-    public RaceResponseDto createRace(RaceRequestDto raceRequestDto){
+    public RaceResponseDto createRace(RaceRequestDto raceRequestDto) {
         log.info("Creating race: {}", raceRequestDto);
 
         Race race = raceMapper.toEntity(raceRequestDto);
@@ -33,10 +33,10 @@ public class RaceService {
         return raceMapper.toDto(savedRace);
     }
 
-    public RaceResponseDto updateRace(Long id, RaceRequestDto raceRequestDto){
+    public RaceResponseDto updateRace(Long id, RaceRequestDto raceRequestDto) {
         log.info("Update race id: {}", id);
 
-        Race race= getRaceOrThrow(id);
+        Race race = getRaceOrThrow(id);
 
         raceMapper.updateEntity(race, raceRequestDto);
 
@@ -46,32 +46,32 @@ public class RaceService {
 
     }
 
-    public RaceResponseDto getRaceById(Long id){
+    public RaceResponseDto getRaceById(Long id) {
         log.info("Fetching race by id: {}", id);
 
-       Race race = getRaceOrThrow(id);
+        Race race = getRaceOrThrow(id);
         return raceMapper.toDto(race);
 
     }
 
-    public Page<RaceResponseDto> getAllRaces(Pageable pageable){
+    public Page<RaceResponseDto> getAllRaces(Pageable pageable) {
         log.debug("Fetching all races with pagination: {}", pageable);
 
-        Page<Race>racePage = raceRepository.findAll(pageable);
+        Page<Race> racePage = raceRepository.findAll(pageable);
 
         return racePage.map(raceMapper::toDto);
     }
 
-    public void deleteRaceById(Long id){
+    public void deleteRaceById(Long id) {
         log.info("Deleting race by id: {}", id);
 
-        Race race= getRaceOrThrow(id);
+        Race race = getRaceOrThrow(id);
         raceRepository.delete(race);
     }
 
-    private Race getRaceOrThrow(Long raceId){
+    private Race getRaceOrThrow(Long raceId) {
 
-      return  raceRepository.findById(raceId)
-                .orElseThrow(()-> new RaceNotFoundException(raceId));
+        return raceRepository.findById(raceId)
+                .orElseThrow(() -> new RaceNotFoundException(raceId));
     }
 }

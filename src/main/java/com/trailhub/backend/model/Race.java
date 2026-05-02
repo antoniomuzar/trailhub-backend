@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name= "race")
+@Table(name = "race")
 public class Race {
 
     @Id

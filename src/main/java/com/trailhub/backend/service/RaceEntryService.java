@@ -39,8 +39,8 @@ public class RaceEntryService {
 
     public EntryResponseDto joinRace(Long raceId, String userEmail) {
 
-      Race race= getRaceOrThrow(raceId);
-      AppUser appUser= getUserOrThrow(userEmail);
+        Race race = getRaceOrThrow(raceId);
+        AppUser appUser = getUserOrThrow(userEmail);
 
         if (raceEntryRepository.existsByRaceIdAndAppUserId(raceId, appUser.getId())) {
             throw new RaceEntryAlreadyExistsException(raceId, appUser.getId());
@@ -54,19 +54,19 @@ public class RaceEntryService {
         return raceEntryMapper.toDto(savedEntry);
     }
 
-    public void leaveRace(Long raceId, String userEmail){
+    public void leaveRace(Long raceId, String userEmail) {
 
         getRaceOrThrow(raceId);
-        AppUser appUser= getUserOrThrow(userEmail);
+        AppUser appUser = getUserOrThrow(userEmail);
 
-        if(!raceEntryRepository.existsByRaceIdAndAppUserId(raceId, appUser.getId())){
+        if (!raceEntryRepository.existsByRaceIdAndAppUserId(raceId, appUser.getId())) {
             throw new RaceEntryNotFoundException(raceId, appUser.getId());
         }
         raceEntryRepository.deleteByRaceIdAndAppUserId(raceId, appUser.getId());
     }
 
     @Transactional(readOnly = true)
-    public Page<EntryResponseDto> getEntriesByRace(Pageable pageable, Long raceId){
+    public Page<EntryResponseDto> getEntriesByRace(Pageable pageable, Long raceId) {
 
         getRaceOrThrow(raceId);
 
@@ -74,15 +74,15 @@ public class RaceEntryService {
         return entryPage.map(raceEntryMapper::toDto);
     }
 
-    private Race getRaceOrThrow(Long raceId){
+    private Race getRaceOrThrow(Long raceId) {
 
-        return  raceRepository.findById(raceId)
-                .orElseThrow(()-> new RaceNotFoundException(raceId));
+        return raceRepository.findById(raceId)
+                .orElseThrow(() -> new RaceNotFoundException(raceId));
     }
 
-    private AppUser getUserOrThrow(String userEmail){
+    private AppUser getUserOrThrow(String userEmail) {
 
         return appUserRepository.findByEmail(userEmail)
-                .orElseThrow(()-> new AppUserNotFoundException(userEmail));
+                .orElseThrow(() -> new AppUserNotFoundException(userEmail));
     }
 }

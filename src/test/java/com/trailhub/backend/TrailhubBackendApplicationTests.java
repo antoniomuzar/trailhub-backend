@@ -9,5 +9,4 @@ class TrailhubBackendApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }

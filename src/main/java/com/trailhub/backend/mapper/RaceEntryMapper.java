@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RaceEntryMapper {
 
-    public EntryResponseDto toDto(RaceEntry entry){
+    public EntryResponseDto toDto(RaceEntry entry) {
         EntryResponseDto dto = new EntryResponseDto();
         dto.setEntryId(entry.getId());
         dto.setRaceId(entry.getRace().getId());

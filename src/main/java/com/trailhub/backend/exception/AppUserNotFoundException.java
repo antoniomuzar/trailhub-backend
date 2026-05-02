@@ -1,8 +1,8 @@
 package com.trailhub.backend.exception;
 
-public class AppUserNotFoundException extends RuntimeException{
+public class AppUserNotFoundException extends RuntimeException {
 
-    public AppUserNotFoundException(String userEmail){
+    public AppUserNotFoundException(String userEmail) {
         super("User not found with email= %s".formatted(userEmail));
     }
 }

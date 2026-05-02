@@ -9,14 +9,14 @@ import org.springframework.stereotype.Component;
 public class RaceMapper {
 
 
-    public Race toEntity(RaceRequestDto dto){
+    public Race toEntity(RaceRequestDto dto) {
         Race race = new Race();
         race.setName(dto.getName());
         race.setDistance(dto.getDistance());
         return race;
     }
 
-    public RaceResponseDto toDto(Race race){
+    public RaceResponseDto toDto(Race race) {
         RaceResponseDto dto = new RaceResponseDto();
         dto.setId(race.getId());
         dto.setName(race.getName());
@@ -24,7 +24,7 @@ public class RaceMapper {
         return dto;
     }
 
-    public void updateEntity(Race race, RaceRequestDto dto){
+    public void updateEntity(Race race, RaceRequestDto dto) {
         race.setName(dto.getName());
         race.setDistance(dto.getDistance());
     }

@@ -11,7 +11,7 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 @Entity
-@Table(name= "app_user")
+@Table(name = "app_user")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -31,7 +31,7 @@ public class AppUser {
 
     @Email
     @NotBlank
-    @Column(nullable = false, unique = true , length = 255)
+    @Column(nullable = false, unique = true, length = 255)
     private String email;
 
     @NotNull

@@ -45,12 +45,12 @@ public class SecurityConfig {
 
                         //Swagger endpoint
                         .requestMatchers("/v3/api-docs/**",
-                                    "swagger-ui/**",
+                                "swagger-ui/**",
                                 "/swagger-ui.html").permitAll()
 
                         .anyRequest().authenticated()
                 )
-                .exceptionHandling(ex->ex
+                .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(apiAuthenticationEntryPoint) //401
                         .accessDeniedHandler(apiAccessDeniedHandler) //403
                 )
@@ -61,7 +61,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 }

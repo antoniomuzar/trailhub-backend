@@ -9,11 +9,11 @@ public enum Distance {
 
     private final String label;
 
-    Distance(String label){
-        this.label= label;
+    Distance(String label) {
+        this.label = label;
     }
 
-    public String getLabel(){
+    public String getLabel() {
         return label;
     }
 

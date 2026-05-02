@@ -25,29 +25,26 @@ public class RaceEntryController {
     }
 
     @PostMapping("/me")
-    public ResponseEntity<EntryResponseDto> joinRace(@PathVariable Long raceId, Authentication authentication){
+    public ResponseEntity<EntryResponseDto> joinRace(@PathVariable Long raceId, Authentication authentication) {
 
         String userEmail = authentication.getName();
-        log.debug("Joining race: {}, user: {}", raceId, userEmail);
 
-        EntryResponseDto savedEntry = raceEntryService.joinRace(raceId,userEmail);
+        EntryResponseDto savedEntry = raceEntryService.joinRace(raceId, userEmail);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedEntry);
     }
 
     @GetMapping
-    public ResponseEntity<Page<EntryResponseDto>> getAllEntries( @PathVariable Long raceId, @ParameterObject Pageable pageable){
-        log.debug("Fetching entries for race: {}, pageable: {}", raceId, pageable);
+    public ResponseEntity<Page<EntryResponseDto>> getAllEntries(@PathVariable Long raceId, @ParameterObject Pageable pageable) {
 
         Page<EntryResponseDto> entries = raceEntryService.getEntriesByRace(pageable, raceId);
         return ResponseEntity.ok(entries);
     }
 
     @DeleteMapping("/me")
-    public ResponseEntity<Void> leaveRace(@PathVariable Long raceId, Authentication authentication){
+    public ResponseEntity<Void> leaveRace(@PathVariable Long raceId, Authentication authentication) {
         String userEmail = authentication.getName();
-        log.debug("Leaving race: {}, user: {}", raceId, userEmail);
 
-        raceEntryService.leaveRace(raceId,userEmail);
+        raceEntryService.leaveRace(raceId, userEmail);
         return ResponseEntity.noContent().build();
     }
 }
