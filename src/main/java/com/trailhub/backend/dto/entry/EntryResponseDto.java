@@ -9,6 +9,6 @@ public class EntryResponseDto {
 
     private Long entryId;
     private Long raceId;
-    private Long userId;
     private LocalDateTime createdAt;
+    private ParticipantDto participant;
 }
