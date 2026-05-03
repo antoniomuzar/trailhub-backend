@@ -146,6 +146,7 @@ Optional sorting: &sort=id,asc (use a real field name; avoid invalid example val
 ### Races
 
 - `GET /api/races` — list races (paginated)
+- `GET /api/races/me` — list races the current user has joined (paginated; `page`, `size`, `sort` — default order by registration time, newest first)
 - `GET /api/races/{id}` — get race by id
 - `POST /api/races` — create race (ADMIN)
 - `PUT /api/races/{id}` — update race (ADMIN)

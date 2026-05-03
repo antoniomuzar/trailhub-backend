@@ -9,6 +9,7 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -37,6 +38,12 @@ public class RaceController {
                 .buildAndExpand(savedRace.getId())
                 .toUri();
         return ResponseEntity.created(location).body(savedRace);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<Page<RaceResponseDto>> getMyRaces(Authentication authentication,
+                                                            @ParameterObject Pageable pageable) {
+        return ResponseEntity.ok(raceService.getRacesForCurrentUser(authentication.getName(), pageable));
     }
 
     @GetMapping("/{id}")

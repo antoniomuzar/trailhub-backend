@@ -13,6 +13,8 @@ public interface RaceEntryRepository extends JpaRepository<RaceEntry, Long> {
 
     Optional<RaceEntry> findByIdAndRaceId(Long id, Long raceId);
 
+    Page<RaceEntry> findByAppUser_IdOrderByCreatedAtDesc(Long appUserId, Pageable pageable);
+
     boolean existsByRaceIdAndAppUserId(Long raceId, Long appUserId);
 
     void deleteByRaceIdAndAppUserId(Long raceId, Long appUserId);

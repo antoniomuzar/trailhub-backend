@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.matchesPattern;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -38,6 +39,33 @@ class RaceApiIT extends AbstractIntegrationTest {
                         .with(httpBasic("john@trailhub.com", "user123")))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content").isArray());
+    }
+
+    @Test
+    void getMyRaces_withoutAuth_returns401() throws Exception {
+        mockMvc.perform(get("/api/races/me"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void getMyRaces_asUser_whenNoEntries_returns200EmptyList() throws Exception {
+        mockMvc.perform(get("/api/races/me")
+                        .with(httpBasic("john@trailhub.com", "user123")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content", hasSize(0)));
+    }
+
+    @Test
+    void getMyRaces_afterJoin_containsThatRace() throws Exception {
+        mockMvc.perform(post("/api/races/{raceId}/entries/me", 1L)
+                        .with(httpBasic("john@trailhub.com", "user123")))
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(get("/api/races/me")
+                        .with(httpBasic("john@trailhub.com", "user123")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content", hasSize(1)))
+                .andExpect(jsonPath("$.content[0].id").value(1));
     }
 
     @Test
