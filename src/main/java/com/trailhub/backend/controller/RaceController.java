@@ -8,10 +8,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/api/races")
@@ -30,7 +32,11 @@ public class RaceController {
     public ResponseEntity<RaceResponseDto> createRace(@Valid @RequestBody RaceRequestDto raceRequestDto) {
 
         RaceResponseDto savedRace = raceService.createRace(raceRequestDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedRace);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedRace.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(savedRace);
     }
 
     @GetMapping("/{id}")

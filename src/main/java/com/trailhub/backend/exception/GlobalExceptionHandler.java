@@ -53,6 +53,14 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse(ex.getMessage(), LocalDateTime.now(), HttpStatus.NOT_FOUND.value()));
     }
 
+    @ExceptionHandler(RaceEntryIdNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleRaceEntryIdNotFound(RaceEntryIdNotFoundException ex) {
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponse(ex.getMessage(), LocalDateTime.now(), HttpStatus.NOT_FOUND.value()));
+    }
+
     @ExceptionHandler(AppUserNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleAppUserNotFoundException(AppUserNotFoundException ex) {
 

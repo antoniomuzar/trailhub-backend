@@ -154,6 +154,7 @@ Optional sorting: &sort=id,asc (use a real field name; avoid invalid example val
 ### Entries
 
 - `POST /api/races/{raceId}/entries/me` — join the current user to a race
+- `GET /api/races/{raceId}/entries/{entryId}` — get one entry by id (for that race)
 - `DELETE /api/races/{raceId}/entries/me` — remove the current user from a race
 - `GET /api/races/{raceId}/entries` — list entries for a race (paginated)
 

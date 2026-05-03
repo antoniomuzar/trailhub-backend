@@ -29,7 +29,6 @@ public class RaceService {
 
         Race race = raceMapper.toEntity(raceRequestDto);
         Race savedRace = raceRepository.save(race);
-
         return raceMapper.toDto(savedRace);
     }
 

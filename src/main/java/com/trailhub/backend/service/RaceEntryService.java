@@ -3,6 +3,7 @@ package com.trailhub.backend.service;
 import com.trailhub.backend.dto.entry.EntryResponseDto;
 import com.trailhub.backend.exception.AppUserNotFoundException;
 import com.trailhub.backend.exception.RaceEntryAlreadyExistsException;
+import com.trailhub.backend.exception.RaceEntryIdNotFoundException;
 import com.trailhub.backend.exception.RaceEntryNotFoundException;
 import com.trailhub.backend.exception.RaceNotFoundException;
 import com.trailhub.backend.mapper.RaceEntryMapper;
@@ -52,6 +53,14 @@ public class RaceEntryService {
 
         RaceEntry savedEntry = raceEntryRepository.save(raceEntry);
         return raceEntryMapper.toDto(savedEntry);
+    }
+
+    @Transactional(readOnly = true)
+    public EntryResponseDto getEntryById(Long raceId, Long entryId) {
+        getRaceOrThrow(raceId);
+        RaceEntry entry = raceEntryRepository.findByIdAndRaceId(entryId, raceId)
+                .orElseThrow(() -> new RaceEntryIdNotFoundException(raceId, entryId));
+        return raceEntryMapper.toDto(entry);
     }
 
     public void leaveRace(Long raceId, String userEmail) {

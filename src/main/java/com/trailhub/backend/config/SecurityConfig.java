@@ -33,6 +33,7 @@ public class SecurityConfig {
                         //Entry endpoints: authenticated users
                         .requestMatchers(HttpMethod.POST, "/api/races/*/entries/me").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/races/*/entries/me").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/races/*/entries/*").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/races/*/entries").authenticated()
 
                         //Race read endpoints: authenticated users

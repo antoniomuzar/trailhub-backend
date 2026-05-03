@@ -6,11 +6,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/api/races/{raceId}/entries")
@@ -24,13 +26,22 @@ public class RaceEntryController {
         this.raceEntryService = raceEntryService;
     }
 
+    @GetMapping("/{entryId:\\d+}")
+    public ResponseEntity<EntryResponseDto> getEntryById(@PathVariable Long raceId, @PathVariable Long entryId) {
+        return ResponseEntity.ok(raceEntryService.getEntryById(raceId, entryId));
+    }
+
     @PostMapping("/me")
     public ResponseEntity<EntryResponseDto> joinRace(@PathVariable Long raceId, Authentication authentication) {
 
         String userEmail = authentication.getName();
 
         EntryResponseDto savedEntry = raceEntryService.joinRace(raceId, userEmail);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedEntry);
+        URI location = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/api/races/{raceId}/entries/{entryId}")
+                .buildAndExpand(raceId, savedEntry.getEntryId())
+                .toUri();
+        return ResponseEntity.created(location).body(savedEntry);
     }
 
     @GetMapping
